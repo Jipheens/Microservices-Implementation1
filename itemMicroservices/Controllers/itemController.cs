@@ -94,6 +94,18 @@ namespace itemMicroservices.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            using (SqlConnection connection = _connection)
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("DeleteItem", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
+
+
     }
 }
